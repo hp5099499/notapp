@@ -1,1 +1,13 @@
+streamlit
+yfinance
+stocknews
+pandas 
+numpy
+matplotlib
+plotly
+scikit-learn
+ta
+xgboost
+pyngrok
+stocknews
 
