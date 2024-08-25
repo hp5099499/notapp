@@ -458,7 +458,13 @@ if st.session_state["logged_in"]:
     choice = st_navbar(["Home", "Dashboard", "Analysis","About","Profile"])
     if choice == "Home":
         import dashboard
-        dashboard.display()
+        st.subheader("Top Gainer")
+        dashboard.fetch_gainers()
+        st.subheader("Top Loser")
+        dashboard.display_losers()
+        st.subheader("Indices")
+        dashboard.display_indices()
+        
         # Load dashboard page
     elif choice == "Dashboard":
         import Homepage
