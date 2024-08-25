@@ -13,5 +13,4 @@ stocknews
 streamlit_navigation_bar
 beautifulsoup4
 yahooquery
-time
 requests
