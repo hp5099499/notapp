@@ -11,7 +11,3 @@ xgboost
 pyngrok
 stocknews
 streamlit_navigation_bar
-yahooquery
-requests
-time
-bs4
