@@ -455,7 +455,7 @@ if st.session_state["logged_in"]:
 
 
     st.sidebar.button("Logout",on_click=logout)
-    choice = st_navbar(["Home", "Dashboard", "Analysis","About","Profile"])
+    choice = st_navbar(["Home", "Dashboard", "Analysis","About","Watchlist"])
     if choice == "Home":
         import dashboard
         st.subheader("Top Gainer")
@@ -475,7 +475,7 @@ if st.session_state["logged_in"]:
         Aboutpage.display()
     elif choice == "Analysis":
         analysis()
-    elif choice=="Profile":
+    elif choice=="Watchlist":
         import loginpage
         loginpage.display()
     
