@@ -458,10 +458,10 @@ if st.session_state["logged_in"]:
     choice = st_navbar(["Home", "Dashboard", "Analysis","About","Watchlist"])
     if choice == "Home":
         import dashboard
-       st.subheader("Top Gainer")
+        st.subheader("Top Gainer")
         dashboard.fetch_gainers()
         st.subheader("Top Loser")
-         dashboard.display_losers()
+        dashboard.display_losers()
         st.subheader("Indices")
 
         pthon.display_indices()
