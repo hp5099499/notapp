@@ -464,7 +464,7 @@ if st.session_state["logged_in"]:
         dashboard.display_losers()
         st.subheader("Indices")
 
-        pthon.display_indices()
+        dashboard.display_indices()
         # Load dashboard page
     elif choice == "Dashboard":
         import Homepage
