@@ -25,7 +25,7 @@ def fetch_gainers():
             data = response.json().get('legends', [])
             selected_legend = st.sidebar.selectbox("Select a Gainer Legend:", [legend[0] for legend in data])
             if selected_legend:
-                    st.markdown("<div class='custom-header'>Top Gainers</div>", unsafe_allow_html=True)
+                st.markdown("<div class='custom-header'>Top Gainers</div>", unsafe_allow_html=True)
 
                 table = [{
                     "Symbol": item['symbol'],
