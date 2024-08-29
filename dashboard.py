@@ -127,7 +127,7 @@ def fetch_indices(indices):
 # Streamlit layout for displaying Top Losers
 def display_losers():
     st.markdown("<div class='custom-header'>Top Losers</div>", unsafe_allow_html=True)
-    with st.spinner('Scraping data...'):
+    with st.spinner('Loading data...'):
         data = scrape_top_losers()
         if data:
             companies = [item['Company'] for item in data]
@@ -135,7 +135,6 @@ def display_losers():
             stock_data = fetch_stock_data(tickers)
             df = pd.DataFrame(stock_data).T.reset_index()
             df.columns = ['Company', 'Open Price', 'High Price', 'Low Price', 'Previous Close', 'Close', 'Change (%)']
-            st.write("### Stock Data")
             st.dataframe(df, width=800)
         else:
             st.write('No data found or unable to fetch data.')
