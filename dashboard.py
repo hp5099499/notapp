@@ -6,6 +6,9 @@ from yahooquery import search
 import pandas as pd
 import time
 
+with open("style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
 # Function to fetch Top Gainers from NSE
 def fetch_gainers():
     url = 'https://www.nseindia.com/api/live-analysis-variations?index=gainers'
