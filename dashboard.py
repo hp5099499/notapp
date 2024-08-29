@@ -165,9 +165,6 @@ def display_indices():
 # Main function to run the app
 def main():
     st.title("Stock Market Dashboard")
-    
-    with open("style.css") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
     st.markdown("<div class='custom-header'>Top Gainers</div>", unsafe_allow_html=True)
     fetch_gainers()
