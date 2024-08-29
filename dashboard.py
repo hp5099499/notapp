@@ -25,7 +25,7 @@ def fetch_gainers():
             data = response.json().get('legends', [])
             selected_legend = st.sidebar.selectbox("Select a Gainer Legend:", [legend[0] for legend in data])
             if selected_legend:
-                 table = [{
+              table = [{
                     "Symbol": item['symbol'],
                     "Open Price": f"{item['open_price']:.2f}",
                     "High Price": f"{item['high_price']:.2f}",
