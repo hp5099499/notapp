@@ -9,7 +9,7 @@
         border: 5px solid green;
         margin:10px
     }
-.stHeading{
+div.stHeading{
         font-size: 30px;
         font-weight: bold;
         color: #4CAF50;  /* Change this to your desired color */
