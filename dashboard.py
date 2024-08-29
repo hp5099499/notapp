@@ -165,7 +165,7 @@ def display_indices():
         time.sleep(1)
 
 # Main function to run the app
-def main()
+def main():
     fetch_gainers()
     display_losers()
     display_indices()
