@@ -126,7 +126,6 @@ def fetch_indices(indices):
 
 # Streamlit layout for displaying Top Losers
 def display_losers():
-    st.markdown("<div class='custom-header'>Top Losers</div>", unsafe_allow_html=True)
     with st.spinner('Loading data...'):
         data = scrape_top_losers()
         if data:
@@ -147,7 +146,6 @@ def display_indices():
         "S&P 500": "^GSPC", "Dow Jones": "^DJI"
     }
     
-    st.markdown("<div class='custom-header'>Real-Time Indices Data</div>", unsafe_allow_html=True)
     placeholder = st.empty()
     
     while True:
