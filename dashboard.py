@@ -6,6 +6,7 @@ from yahooquery import search
 import pandas as pd
 import time
 
+# Apply custom CSS styling from file
 with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -33,9 +34,12 @@ def fetch_gainers():
                     "Previous Price": f"{item['prev_price']:.2f}",
                     "Change (%)": f"{item['perChange']:.2f}"
                 } for item in response.json()[selected_legend]["data"]]
-                st.table(pd.DataFrame(table))
-        except requests.exceptions.JSONDecodeError:
-            st.error("Failed to parse JSON.")
+                # Add index starting from 1
+                df = pd.DataFrame(table)
+                df.index += 1
+                st.table(df)
+        except (requests.exceptions.JSONDecodeError, KeyError) as e:
+            st.error(f"Failed to parse JSON: {e}")
     else:
         st.error(f"Failed to retrieve data. Status code: {response.status_code}")
 
@@ -82,12 +86,12 @@ def fetch_stock_data(tickers):
                 curr_close = hist['Close'].iloc[-1]
                 change = curr_close - prev_close
                 data[company] = {
-                    'Open Price': hist['Open'].iloc[-1],
-                    'High Price': hist['High'].iloc[-1],
-                    'Low Price': hist['Low'].iloc[-1],
-                    'Previous Close': prev_close,
-                    'Close': curr_close,
-                    'Change (%)': (change / prev_close) * 100
+                    'Open Price': f"{hist['Open'].iloc[-1]:.2f}",
+                    'High Price': f"{hist['High'].iloc[-1]:.2f}",
+                    'Low Price': f"{hist['Low'].iloc[-1]:.2f}",
+                    'Previous Close': f"{prev_close:.2f}",
+                    'Close': f"{curr_close:.2f}",
+                    'Change (%)': f"{(change / prev_close) * 100:.2f}"
                 }
             else:
                 data[company] = {key: None for key in ['Open Price', 'High Price', 'Low Price', 'Previous Close', 'Close', 'Change (%)']}
@@ -132,9 +136,19 @@ def display_losers():
             companies = [item['Company'] for item in data]
             tickers = get_tickers_from_names(companies)
             stock_data = fetch_stock_data(tickers)
-            df = pd.DataFrame(stock_data).T.reset_index()
-            df.columns = ['Company', 'Open Price', 'High Price', 'Low Price', 'Previous Close', 'Close', 'Change (%)']
-            st.dataframe(df, width=800)
+            table = [{
+                "Symbol": symbol,
+                "Open Price": stock_info['Open Price'],
+                "High Price": stock_info['High Price'],
+                "Low Price": stock_info['Low Price'],
+                "Previous Close": stock_info['Previous Close'],
+                "Close": stock_info['Close'],
+                "Change (%)": stock_info['Change (%)']
+            } for symbol, stock_info in stock_data.items()]
+            # Add index starting from 1
+            df = pd.DataFrame(table)
+            df.index += 1
+            st.table(df)
         else:
             st.write('No data found or unable to fetch data.')
 
@@ -146,22 +160,18 @@ def display_indices():
         "S&P 500": "^GSPC", "Dow Jones": "^DJI"
     }
     
-    placeholder = st.empty()
-    
-    while True:
-        data = fetch_indices(indices)
-        with placeholder.container():
-            cols = st.columns(len(data))
-            for i, (name, stats) in enumerate(data.items()):
-                cols[i].metric(
-                    label=name,
-                    value=f"{stats['close']:.2f}" if stats['close'] else "N/A",
-                    delta=f"{stats['change']:.2f} ({stats['percent_change']:.2f}%)" if stats['change'] else "N/A"
-                )
-        time.sleep(1)
+    data = fetch_indices(indices)
+    cols = st.columns(len(data))
+    for i, (name, stats) in enumerate(data.items()):
+        cols[i].metric(
+            label=name,
+            value=f"{stats['close']:.2f}" if stats['close'] else "N/A",
+            delta=f"{stats['change']:.2f} ({stats['percent_change']:.2f}%)" if stats['change'] else "N/A"
+        )
 
 # Main function to run the app
 def main():
+    st.title("Financial Dashboard")
     fetch_gainers()
     display_losers()
     display_indices()
