@@ -68,7 +68,7 @@ def analysis():
     pd_p = (p_d / data.Open.iloc[1]) * 100
     
     def tech_indicators():
-        st.header('Technical Indicators')
+        st.subheader('Technical Indicators')
         option = st.radio('Choose a Technical Indicator to Visualize', ['Close', 'BB', 'MACD', 'RSI', 'SMA', 'EMA'])
     
         # Bollinger bands
@@ -110,7 +110,7 @@ def analysis():
         return yf.Ticker(ticker).history(period=period, interval=interval)
     
     def update_data_and_plot():
-        st.title("Real-Time Stock Data")
+        st.subheader("Real-Time Stock Data")
         ticker=option
         time_range = st.selectbox("Select the time range:", ["1d"])
     
