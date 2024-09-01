@@ -27,8 +27,6 @@ def analysis():
     import time
     
     
-    st.subheader('Stock Price Predictions')
-    
     def main():
         option = st.sidebar.selectbox('Make a choice', ['Visualize', 'Recent Data', 'Predict'])
         if option == 'Visualize':
@@ -224,6 +222,8 @@ def analysis():
                 )
     
     def predict():
+        st.subheader('Stock Price Predictions')
+
         num = st.number_input('How many days forecast?', value=5)
         num = int(num)
         if st.button('Predict'):
