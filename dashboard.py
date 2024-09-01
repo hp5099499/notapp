@@ -7,7 +7,7 @@ import pandas as pd
 import time
 
 # Apply custom CSS styling from file
-with open("style.css") as f:
+with open("styles/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Function to fetch Top Gainers from NSE
@@ -129,29 +129,38 @@ def fetch_indices(indices):
     return index_data
 
 # Streamlit layout for displaying Top Losers
+@st.cache_data(ttl=3600)  # Cache data for 86400 seconds (1 day)
+def get_loser_data():
+    data = scrape_top_losers()
+    if data:
+        companies = [item['Company'] for item in data]
+        tickers = get_tickers_from_names(companies)
+        stock_data = fetch_stock_data(tickers)
+        table = [{
+            "Symbol": symbol,
+            "Open Price": stock_info['Open Price'],
+            "High Price": stock_info['High Price'],
+            "Low Price": stock_info['Low Price'],
+            "Previous Close": stock_info['Previous Close'],
+            "Close": stock_info['Close'],
+            "Change (%)": stock_info['Change (%)']
+        } for symbol, stock_info in stock_data.items()]
+        return table
+    else:
+        return []
+
+# Function to display the cached data
 def display_losers():
     with st.spinner('Loading data...'):
-        data = scrape_top_losers()
-        if data:
-            companies = [item['Company'] for item in data]
-            tickers = get_tickers_from_names(companies)
-            stock_data = fetch_stock_data(tickers)
-            table = [{
-                "Symbol": symbol,
-                "Open Price": stock_info['Open Price'],
-                "High Price": stock_info['High Price'],
-                "Low Price": stock_info['Low Price'],
-                "Previous Close": stock_info['Previous Close'],
-                "Close": stock_info['Close'],
-                "Change (%)": stock_info['Change (%)']
-            } for symbol, stock_info in stock_data.items()]
-            # Add index starting from 1
+        table = get_loser_data()
+        if table:
             df = pd.DataFrame(table)
-            df.index += 1
+            df.index += 1  # Add index starting from 1
             st.table(df)
         else:
             st.write('No data found or unable to fetch data.')
 
+# Function to display Real-Time Indices Data
 # Function to display Real-Time Indices Data
 def display_indices():
     indices = {
@@ -161,14 +170,24 @@ def display_indices():
     }
     
     data = fetch_indices(indices)
-    cols = st.columns(len(data))
-    for i, (name, stats) in enumerate(data.items()):
-        cols[i].metric(
-            label=name,
-            value=f"{stats['close']:.2f}" if stats['close'] else "N/A",
-            delta=f"{stats['change']:.2f} ({stats['percent_change']:.2f}%)" if stats['change'] else "N/A"
-        )
+    
+    # Dynamic column creation based on the number of indices
+    num_indices = len(data)
+    cols_per_row = 4  # Number of columns per row for better display
+    num_rows = (num_indices + cols_per_row - 1) // cols_per_row  # Calculate the required number of rows
 
+    # Iterate over rows
+    for row in range(num_rows):
+        cols = st.columns(cols_per_row)  # Create columns for the current row
+        for col_index in range(cols_per_row):
+            index = row * cols_per_row + col_index
+            if index < num_indices:
+                name, stats = list(data.items())[index]
+                cols[col_index].metric(
+                    label=name,
+                    value=f"{stats['close']:.2f}" if stats['close'] else "N/A",
+                    delta=f"{stats['change']:.2f} ({stats['percent_change']:.2f}%)" if stats['change'] else "N/A"
+                )
 # Main function to run the app
 def main():
     st.title("Financial Dashboard")
