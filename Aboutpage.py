@@ -2,8 +2,6 @@ def display():
     import streamlit as st
 
 # def about_page():
-    st.markdown("""Design the About page for the StockAI project.""")
-        # st.title("About StockAI")
     
     st.subheader("What is StockAI?")
     st.write("""
