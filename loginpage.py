@@ -53,7 +53,7 @@ def display():
             st.error(f"Error fetching data for {ticker}: {e}")
             return None
     
-    st.title('🔖 Stock Watchlist')
+    st.subheader('🔖 Stock Watchlist')
     
     # Section to add, view, and delete watchlists
     st.sidebar.header('Manage Watchlists')
