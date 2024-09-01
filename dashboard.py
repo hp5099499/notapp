@@ -7,7 +7,7 @@ import pandas as pd
 import time
 
 # Apply custom CSS styling from file
-with open("styles/style.css") as f:
+with open("style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Function to fetch Top Gainers from NSE
