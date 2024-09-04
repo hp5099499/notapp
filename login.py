@@ -456,12 +456,11 @@ if st.session_state["logged_in"]:
         import dashboard
         st.subheader("Top Gainer")
         dashboard.fetch_gainers()
-        st.subheader("Top Loser")
-
-
+        
+        st.subheader("Top Losers")
         dashboard.display_losers()
+        
         st.subheader("Indices")
-
         dashboard.display_indices()
         # Load dashboard page
     elif choice == "Dashboard":
