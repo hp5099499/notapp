@@ -443,7 +443,7 @@ if "logged_in" not in st.session_state:
     st.session_state["logged_in"] = False
 if 'redirect_to_signin' in st.session_state and st.session_state['redirect_to_signin']:
     st.session_state['redirect_to_signin'] = False
-    st.experimental_rerun()
+    st.rerun()
 if st.session_state["logged_in"]:
     st.sidebar.markdown(
     f"Welcome<h3 style='color:green;'>{st.session_state['username'].upper()}!</h3><p>You have successfully logged into StockAi</p>",
