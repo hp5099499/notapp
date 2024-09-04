@@ -453,16 +453,16 @@ if st.session_state["logged_in"]:
     st.sidebar.button("Logout",on_click=logout)
     choice = st_navbar(["Home", "Dashboard", "Analysis","About","Watchlist"])
     if choice == "Home":
-        import pthon
+        import dashboard
         st.subheader("Top Gainer")
-        pthon.fetch_gainers()
+        dashboard.fetch_gainers()
         st.subheader("Top Loser")
 
 
-        pthon.display_losers()
+        dashboard.display_losers()
         st.subheader("Indices")
 
-        pthon.display_indices()
+        dashboard.display_indices()
         # Load dashboard page
     elif choice == "Dashboard":
         import Homepage
