@@ -8,6 +8,7 @@ import uuid
 import json
 import re
 from streamlit_navigation_bar import st_navbar
+from PIL import Image
 
 
 with open("style.css") as f:
