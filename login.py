@@ -372,20 +372,6 @@ def signin():
             hashed_password = hash_password(password)
             if email in user_data and user_data[email]["password"] == hashed_password:
                 st.sidebar.header("StockAI")
-                default_image_path = "default_image.jpg"
-
-# File uploader for user to upload an image
-                uploaded_file = st.sidebar.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-
-# Use uploaded image if available, otherwise use default
-                image = Image.open(uploaded_file) if uploaded_file else Image.open(default_image_path)
-                caption = "Uploaded Image" if uploaded_file else "Default Image"
-
-# Display the image in the sidebar
-                st.sidebar.image(image, caption=caption, use_column_width=True)
-
-# Optionally display the image in the main content
-                st.image(image, caption=caption, use_column_width=True)
                 st.success(f"Welcome back, {user_data[email]['username']}!")
                 st.session_state["logged_in"] = True
                 st.session_state["username"] = user_data[email]['username']
