@@ -139,7 +139,7 @@ def analysis():
         password = st.text_input("Password", type="password", key="signup_password")
         confirm_password = st.text_input("Confirm Password", type="password", key="signup_confirm_password")
         if username and email:
-                   if st.button("Sign Up", key="signup_button"):
+            if st.button("Sign Up", key="signup_button"):
                 user_data = load_user_data()
                 if not validate_email(email):
                     st.error("Invalid email address.")
