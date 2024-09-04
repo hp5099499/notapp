@@ -10,10 +10,6 @@ import re
 from streamlit_navigation_bar import st_navbar
 
 
-with open("style.css") as f:
-    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-
-
 # analysis page
 def analysis():
     import streamlit as st
@@ -30,8 +26,6 @@ def analysis():
     from sklearn.metrics import r2_score, mean_absolute_error
     import time
     
-    
-    st.subheader('Stock Price Predictions')
     
     def main():
         option = st.sidebar.selectbox('Make a choice', ['Visualize', 'Recent Data', 'Predict'])
@@ -72,7 +66,7 @@ def analysis():
     pd_p = (p_d / data.Open.iloc[1]) * 100
     
     def tech_indicators():
-        st.header('Technical Indicators')
+        st.subheader('Technical Indicators')
         option = st.radio('Choose a Technical Indicator to Visualize', ['Close', 'BB', 'MACD', 'RSI', 'SMA', 'EMA'])
     
         # Bollinger bands
@@ -114,7 +108,7 @@ def analysis():
         return yf.Ticker(ticker).history(period=period, interval=interval)
     
     def update_data_and_plot():
-        st.title("Real-Time Stock Data")
+        st.subheader("Real-Time Stock Data")
         ticker=option
         time_range = st.selectbox("Select the time range:", ["1d"])
     
@@ -217,9 +211,19 @@ def analysis():
                 
                 # Create a slider that ranges from the minimum to maximum value of 'Close'
                 # You can set the default value to the latest value
-
+                min_value = close.min()
+                max_value = close.max()
+                
+                st.slider(
+                    label="Price",
+                    min_value=float(min_value),
+                    max_value=float(max_value),
+                    value=float(latest_value)
+                )
     
     def predict():
+        st.subheader('Stock Price Predictions')
+
         num = st.number_input('How many days forecast?', value=5)
         num = int(num)
         if st.button('Predict'):
@@ -332,9 +336,62 @@ def validate_password(password):
     # Password validation: at least 8 characters, one digit, one uppercase letter, and one special character
     password_pattern = r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
     return re.match(password_pattern, password)
+
+
+
+# Custom CSS for the app
+    st.markdown("""
+    <style>
+        body {
+            background-color: #f0f0f0;
+        }
+        .main {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #659;
+            border: 1px solid #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .header {
+            background-color: #3df;
+            color: #fcc;
+            padding: 10px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+        }
+        .form {
+            padding: 20px;
+        }
+        .form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .form input[type="text"], .form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+        }
+        .form button[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form button[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+    """, unsafe_allow_html=True)
 # Signup Page
 def signup():
-    st.markdown('<div class="big-font">Signup</p>', unsafe_allow_html=True)
+    st.title("Sign Up")
     username = st.text_input("Username", key="signup_username")
     email = st.text_input("Email", key="signup_email")
     password = st.text_input("Password", type="password", key="signup_password")
@@ -434,7 +491,7 @@ def logout():
     st.session_state["logged_in"] = False
     st.session_state["username"] = ""
     st.session_state["email"] = ""
-    # st.rerun()
+    st.rerun()
 
 # Main Function with Navigation
 
@@ -453,16 +510,14 @@ if st.session_state["logged_in"]:
     st.sidebar.button("Logout",on_click=logout)
     choice = st_navbar(["Home", "Dashboard", "Analysis","About","Watchlist"])
     if choice == "Home":
-        import pthon
+        import dashboard
         st.subheader("Top Gainer")
-        pthon.fetch_gainers()
+        dashboard.fetch_gainers()
         st.subheader("Top Loser")
-
-
-        pthon.display_losers()
+        dashboard.display_losers()
         st.subheader("Indices")
 
-        pthon.display_indices()
+        dashboard.display_indices()
         # Load dashboard page
     elif choice == "Dashboard":
         import Homepage
