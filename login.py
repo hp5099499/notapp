@@ -550,8 +550,7 @@ def logout():
     st.session_state["logged_in"] = False
     st.session_state["username"] = ""
     st.session_state["email"] = ""
-    st.session_state = False
-    # st.rerun()
+    st.rerun()
 # Main Function with Navigation
 
 
