@@ -7,7 +7,7 @@ import pandas as pd
 import time
 
 # Apply custom CSS styling from file
-with open("style.css") as f:
+with open("styles/style.css") as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 # Function to fetch Top Gainers from NSE
@@ -129,7 +129,7 @@ def fetch_indices(indices):
     return index_data
 
 # Streamlit layout for displaying Top Losers
-@st.cache_data(ttl=3600)  # Cache data for 86400 seconds (1 day)
+@st.cache_data(ttl=86400)  # Cache data for 86400 seconds (1 day)
 def get_loser_data():
     data = scrape_top_losers()
     if data:
