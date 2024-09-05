@@ -333,6 +333,60 @@ def validate_password(password):
     # Password validation: at least 8 characters, one digit, one uppercase letter, and one special character
     password_pattern = r'^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
     return re.match(password_pattern, password)
+
+
+# Custom CSS for the app
+st.markdown("""
+<style>
+    body {
+        background-color: #f0f0f0;
+    }
+    .main {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+        background-color: #659;
+        border: 1px solid #fff;
+        border-radius: 15px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .header {
+        background-color: #3df;
+        color: #fcc;
+        padding: 10px;
+        text-align: center;
+    }
+    .header h1 {
+        margin: 0;
+    }
+    .form {
+        padding: 20px;
+    }
+    .form label {
+        display: block;
+        margin-bottom: 10px;
+    }
+    .form input[type="text"], .form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+    }
+    .form button[type="submit"] {
+        background-color: #4CAF50;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .form button[type="submit"]:hover {
+        background-color: #3e8e41;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 # Signup Page
 def signup():
     st.markdown('<div class="big-font">Signup</p>', unsafe_allow_html=True)
@@ -380,28 +434,66 @@ def signin():
 
     
  
+# # Reset Password Page
+# def reset_password():
+#     st.subheader("Forgot Password?")
+#     reset_email = st.text_input("Enter your email to reset your password", key="reset_email")
+#     if reset_email:
+#         if st.button("Send Reset Link", key="send_reset_link"):
+#             if reset_email:
+#                 user_data = load_user_data()
+#                 if reset_email in user_data:
+#                     token = str(uuid.uuid4())
+#                     reset_tokens = load_reset_tokens()
+#                     reset_tokens[token] = reset_email
+#                     save_reset_tokens(reset_tokens)
+#                     if send_reset_email(reset_email, token):
+#                         st.success("A password reset link has been sent to your email.")
+#                 else:
+#                     st.error("Email not registered.")
+#             else:
+#                 st.error("Please enter an email address.")
+
+#     # Check for token and email in the query parameters
+    
+#     token = st.query_params.get('token', [None])
+#     email = st.query_params.get('email', [None])
+    
+#     if isinstance(token, list):
+#         token = tuple(token)
+    
+#     if token and email and token in load_reset_tokens() and load_reset_tokens()[token] == email:
+#         st.success("Please change the password and confirm!")
+#         st.title("Reset Password")
+#         new_password = st.text_input("New Password", type="password", key="new_password")
+#         confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password")
+
+#         if st.button("Reset Password", key="reset_password_button"):
+#             if new_password != confirm_new_password:
+#                 st.error("Passwords do not match.")
+#             else:
+#                 user_data = load_user_data()
+#                 hashed_password = hash_password(new_password)
+
+#                 if email in user_data:
+#                     user_data[email]["password"] = hashed_password
+#                     save_user_data(user_data)
+#                     st.success("Password has been reset. You can now log in.")
+#                     reset_tokens = load_reset_tokens()
+#                     del reset_tokens[token]
+#                     save_reset_tokens(reset_tokens)
+#     else:
+#         st.warning("Please enter the Email or check the email for the reset link .")
+
+# # Logout Function
+# def logout():
+#     st.session_state["logged_in"] = False
+#     st.session_state["username"] = ""
+#     st.session_state["email"] = ""
+#     # st.rerun()
+
 # Reset Password Page
 def reset_password():
-    st.subheader("Forgot Password?")
-    reset_email = st.text_input("Enter your email to reset your password", key="reset_email")
-    if reset_email:
-        if st.button("Send Reset Link", key="send_reset_link"):
-            if reset_email:
-                user_data = load_user_data()
-                if reset_email in user_data:
-                    token = str(uuid.uuid4())
-                    reset_tokens = load_reset_tokens()
-                    reset_tokens[token] = reset_email
-                    save_reset_tokens(reset_tokens)
-                    if send_reset_email(reset_email, token):
-                        st.success("A password reset link has been sent to your email.")
-                else:
-                    st.error("Email not registered.")
-            else:
-                st.error("Please enter an email address.")
-
-    # Check for token and email in the query parameters
-    
     token = st.query_params.get('token', [None])
     email = st.query_params.get('email', [None])
     
@@ -409,8 +501,8 @@ def reset_password():
         token = tuple(token)
     
     if token and email and token in load_reset_tokens() and load_reset_tokens()[token] == email:
-        st.success("Please change the password and confirm!")
         st.title("Reset Password")
+        st.success("Now you can change the password!")
         new_password = st.text_input("New Password", type="password", key="new_password")
         confirm_new_password = st.text_input("Confirm New Password", type="password", key="confirm_new_password")
 
@@ -424,11 +516,29 @@ def reset_password():
                 if email in user_data:
                     user_data[email]["password"] = hashed_password
                     save_user_data(user_data)
-                    st.success("Password has been reset. You can now log in.")
+                    # st.success("Password has been reset. You can now log in.")
                     reset_tokens = load_reset_tokens()
                     del reset_tokens[token]
                     save_reset_tokens(reset_tokens)
+                    st.success("Password reset successfully!")
     else:
+        st.subheader("Forgot Password?")
+        reset_email = st.text_input("Enter your email to reset your password", key="reset_email")
+        if reset_email:
+            if st.button("Send Reset Link", key="send_reset_link"):
+                if reset_email:
+                    user_data = load_user_data()
+                    if reset_email in user_data:
+                        token = str(uuid.uuid4())
+                        reset_tokens = load_reset_tokens()
+                        reset_tokens[token] = reset_email
+                        save_reset_tokens(reset_tokens)
+                        if send_reset_email(reset_email, token):
+                            st.success("A password reset link has been sent to your email.")
+                    else:
+                        st.error("Email not registered.")
+                else:
+                    st.error("Please enter an email address.")
         st.warning("Please enter the Email or check the email for the reset link .")
 
 # Logout Function
