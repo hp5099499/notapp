@@ -429,6 +429,8 @@ def signin():
                 st.success(f"Welcome back, {user_data[email]['username']}!")
                 st.session_state["logged_in"] = True
                 st.session_state["username"] = user_data[email]['username']
+                st.success("Signin Successful")
+                st.session_state.rerun()
             else:
                 st.error("Invalid email or password.")
 
