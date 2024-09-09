@@ -415,6 +415,10 @@ def signup():
         else :
             st.error("Please enter the required fields")
 
+def dash():
+    import dashboard
+    dashboard.display()
+
 # Sign In Page
 def signin():
     st.title("Sign In")
@@ -430,6 +434,7 @@ def signin():
                 st.session_state["logged_in"] = True
                 st.session_state["username"] = user_data[email]['username']
                 st.success("Signin Successful")
+                st.session_state['redirect_to_dash'] = True
             else:
                 st.error("Invalid email or password.")
 
