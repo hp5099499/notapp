@@ -345,8 +345,8 @@ st.markdown("""
         max-width: 800px;
         margin: 100px auto;
         padding: 20px;
-        # background-color: #659;
-        background-image: linear-gradient(to bottom right, #34C759, 
+        background-color: #659;
+        # background-image: linear-gradient(to bottom right, #34C759, 
         border: 1px solid #fff;
         border-radius: 15px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
