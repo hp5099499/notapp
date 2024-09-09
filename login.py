@@ -343,7 +343,7 @@ st.markdown("""
     }
     .main {
         max-width: 800px;
-        margin: 40px auto;
+        margin: 100px auto;
         padding: 20px;
         background-color: #659;
         border: 1px solid #fff;
