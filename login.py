@@ -434,7 +434,7 @@ def signin():
                 st.session_state["logged_in"] = True
                 st.session_state["username"] = user_data[email]['username']
                 st.success("Signin Successful")
-                # st.session_state['redirect_to_dash'] = True
+                st.session_state['redirect_to_dash'] = True
             else:
                 st.error("Invalid email or password.")
 
