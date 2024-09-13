@@ -14,3 +14,4 @@ streamlit_navigation_bar
 beautifulsoup4
 yahooquery
 requests
+newsapi-python
